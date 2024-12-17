@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.ProductoListaPage"
+             xmlns:vmodel="clr-namespace:MauiApp1.ViewModels"
+             xmlns:models="clr-namespace:MauiApp1.Models"
+             x:DataType="vmodel:ProductoListaViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*,Auto" Margin="5" RowSpacing="0">
+        <RefreshView Command="{Binding GetProductosCommand}" IsRefreshing="{Binding IsRefreshing}">
+
+            <CollectionView 
+                BackgroundColor="Transparent"
+                ItemsSource="{Binding Productos}" 
+                SelectedItem="{Binding ProductoSeleccionado}"
+                SelectionMode="Single" 
+                SelectionChangedCommand="{Binding NavigateToDetailCommand}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Producto">
+                                <StackLayout Padding="10">
+                                    <Label  FontSize="Large" Text="{Binding title}" />
+                                    <Label  FontSize="Medium" Text="{Binding price, StringFormat='${0}'}"  />
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>   
+        </RefreshView>
+        <Button Grid.Row="1" Margin="8" Text="Cargar Productos" Command="{Binding GetProductosCommand}"/>
+        <ActivityIndicator             
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Grid.ColumnSpan="2" 
+            HorizontalOptions="FillAndExpand" 
+            VerticalOptions="Center"/>
+    </Grid>
+</ContentPage>
